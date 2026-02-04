@@ -169,12 +169,12 @@ const query = `query GetClasses($search: String, $centre: String, $operationMeth
 
 // Variables cho query (template)
 const getVariables = (pageIndex) => ({
-  search: "-rob-",
+  search: "",
   centres: [],
   courses: [],
-  courseLines: ["66aa05fff072e5001cb61320", "63f9bf1389ef5647c31978dd"],
-  startDate: [null, null],
-  endDate: [null, null],
+  courseLines: ["63f9bf1389ef5647c31978dd", "66aa05fff072e5001cb61320"],
+  startDate: [],
+  endDate: [],
   statusIn: ["RUNNING"],
   pageIndex: pageIndex,
   itemsPerPage: 100,

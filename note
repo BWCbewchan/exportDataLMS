@@ -1,0 +1,3 @@
+thêm file .env: AUTH_TOKEN=
+lấy tp buổi 4 và 8 thì dùng exportSesion4And8.js
+lấy số lớp trong tuần khung giờ nào thì lấy file fetchData -> generateWeekCalendar.js
