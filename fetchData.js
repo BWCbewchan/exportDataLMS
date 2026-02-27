@@ -1,19 +1,10 @@
 const fs = require('fs');
 require('dotenv').config();
+const { getToken } = require('./getToken');
 
 // Cấu hình API
 const API_URL = 'https://lms-api.mindx.vn/';
-const AUTH_TOKEN = process.env.AUTH_TOKEN;
-
-// Kiểm tra token
-if (!AUTH_TOKEN) {
-  console.error('❌ Lỗi: Không tìm thấy AUTH_TOKEN trong file .env');
-  console.log('💡 Hướng dẫn:');
-  console.log('   1. Sao chép file .env.example thành .env');
-  console.log('   2. Lấy token mới từ Chrome DevTools (F12) > Network > lms-api.mindx.vn');
-  console.log('   3. Copy giá trị authorization và dán vào file .env');
-  process.exit(1);
-}
+let AUTH_TOKEN; // Sẽ được lấy tự động bằng getToken() trong main()
 
 // GraphQL query
 const query = `query GetClasses($search: String, $centre: String, $operationMethodId: [String], $openStatus: [String], $centres: [String], $courses: [String], $courseLines: [String], $startDateFrom: Date, $startDateTo: Date, $endDateFrom: Date, $endDateTo: Date, $haveSlotFrom: Date, $haveSlotTo: Date, $statusNotEquals: String, $attendanceCheckedExists: Boolean, $status: String, $statusIn: [String], $attendanceStatus: [String], $studentAttendanceStatus: [String], $teacherAttendanceStatus: [String], $pageIndex: Int!, $itemsPerPage: Int!, $orderBy: String, $teacherId: String, $teacherSlot: [String], $passedSessionIndex: Int, $unpassedSessionIndex: Int, $haveSlotIn: HaveSlotIn, $comments: ClassCommentQuery) {
@@ -350,6 +341,7 @@ function convertToCSV(classes) {
 // Hàm chính
 async function main() {
   try {
+    AUTH_TOKEN = await getToken();
     console.log('🚀 Bắt đầu kéo dữ liệu lớp Robotics...\n');
     
     // Fetch tất cả data

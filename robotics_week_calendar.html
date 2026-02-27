@@ -4,187 +4,374 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lịch học Robotics - Tháng 2/2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --secondary-dark: #db2777;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --danger: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --card-shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            background-attachment: fixed;
+            padding: 0;
+            margin: 0;
             min-height: 100vh;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            perspective: 1000px;
         }
         
         .container {
-            max-width: 100%;
-            margin: 0 auto;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 0;
+            box-shadow: none;
             overflow: hidden;
+            transform: translateZ(0);
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
+            display: none;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(10%, 10%, 0) scale(1.1); }
         }
         
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 2em;
+            margin-bottom: 5px;
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 i {
+            margin-right: 15px;
+            color: #fbbf24;
         }
         
         .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1.05em;
+            opacity: 0.95;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p i {
+            margin-right: 8px;
         }
         
         .week-navigation {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            padding: 15px;
-            background: #f0f0f0;
-            border-bottom: 2px solid #e0e0e0;
+            gap: 15px;
+            padding: 10px 15px;
+            background: linear-gradient(to right, #f8fafc, #f1f5f9);
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
         }
         
         .week-navigation button {
-            padding: 10px 20px;
-            background: #667eea;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.9em;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgb(99 102 241 / 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .week-navigation button:hover:not(:disabled) {
-            background: #764ba2;
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transform: translate3d(0, -2px, 0);
+            box-shadow: 0 10px 15px -3px rgb(99 102 241 / 0.4);
         }
         
         .week-navigation button:disabled {
-            background: #ccc;
+            background: #e2e8f0;
+            color: #94a3b8;
             cursor: not-allowed;
+            box-shadow: none;
         }
         
         .week-navigation span {
-            font-weight: 600;
-            font-size: 1.1em;
+            font-weight: 700;
+            font-size: 0.95em;
+            color: #1e293b;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .week-navigation span i {
+            color: #6366f1;
         }
         
         .controls {
-            padding: 20px 30px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
+            padding: 10px 15px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             gap: 15px;
             align-items: center;
             flex-wrap: wrap;
+            flex-shrink: 0;
         }
         
         .controls label {
             font-weight: 600;
-            color: #495057;
+            color: #475569;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .controls label i {
+            color: #6366f1;
+            font-size: 1.1em;
         }
         
         .controls select, .controls input {
-            padding: 10px 15px;
-            border: 2px solid #dee2e6;
+            padding: 8px 12px;
+            border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.85em;
             background: white;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
         }
         
         .controls input {
-            min-width: 250px;
+            min-width: 220px;
         }
         
-        .controls select:hover, .controls input:focus {
-            border-color: #667eea;
+        .controls select:hover, .controls input:hover {
+            border-color: #c7d2fe;
         }
         
         .controls select:focus, .controls input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
         
         .filter-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+            background: #f8fafc;
+            padding: 8px 16px;
+            border-radius: 12px;
         }
         
         .stats {
-            padding: 15px 30px;
-            background: #e7f3ff;
+            padding: 8px 15px;
+            background: linear-gradient(to right, #ede9fe, #ddd6fe);
             display: flex;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
         }
         
         .stat-item {
             display: flex;
             align-items: center;
             gap: 10px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+        
+        .stat-item i {
+            font-size: 1.2em;
+            color: #6366f1;
         }
         
         .stat-item strong {
-            color: #667eea;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        
+        .stat-item span {
+            font-weight: 700;
+            color: #6366f1;
+            font-size: 0.95em;
         }
         
         .calendar-wrapper {
-            padding: 20px;
+            padding: 10px;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            transform: translateZ(0);
+            will-change: scroll-position;
+            contain: layout style paint;
+        }
+        
+        .calendar-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .calendar-wrapper::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .calendar-wrapper::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        
+        .calendar-wrapper::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
         }
         
         .calendar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            transform: translateZ(0);
+            will-change: transform;
+            height: 100%;
         }
         
         .day-column {
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #f1f5f9;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
         }
         
         .day-column:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            transform: translate3d(0, -8px, 0) scale(1.02);
+            box-shadow: var(--card-shadow-hover);
         }
         
         .day-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
-            padding: 15px;
+            padding: 12px 10px;
             text-align: center;
             font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .day-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: transform 0.5s ease-out;
+            transform: translateX(0);
+            will-change: transform;
+        }
+        
+        .day-column:hover .day-header::before {
+            transform: translateX(200%);
         }
         
         .day-header .day-name {
-            font-size: 1.1em;
-            margin-bottom: 5px;
+            font-size: 0.95em;
+            margin-bottom: 4px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
         
         .day-header .day-date {
-            font-size: 0.9em;
-            opacity: 0.9;
+            font-size: 0.75em;
+            opacity: 0.95;
+            font-weight: 500;
         }
         
         .day-content {
-            padding: 15px;
-            max-height: 700px;
+            padding: 10px;
+            flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            transform: translateZ(0);
+            will-change: scroll-position;
+            contain: layout style paint;
         }
         
         .day-content::-webkit-scrollbar {
@@ -199,6 +386,7 @@
         .day-content::-webkit-scrollbar-thumb {
             background: #667eea;
             border-radius: 10px;
+            transition: background 0.2s ease;
         }
         
         .day-content::-webkit-scrollbar-thumb:hover {
@@ -206,31 +394,43 @@
         }
         
         .class-card {
-            color: white;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 12px;
+            color: #1e293b;
+            background: white;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            border-left: 4px solid rgba(255,255,255,0.5);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-left-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #cbd5e1;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        
+        .class-card::before {
+            display: none;
         }
         
         .class-card.robotics {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-left-color: #6366f1;
         }
         
         .class-card.kindergarten {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-left-color: #ec4899;
         }
         
         .class-card.other {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-left-color: #06b6d4;
         }
         
         .class-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            transform: translate3d(4px, 0, 0);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border-left-width: 6px;
         }
         
         .class-card:last-child {
@@ -238,105 +438,258 @@
         }
         
         .class-type-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             padding: 2px 8px;
             border-radius: 12px;
-            font-size: 0.65em;
+            font-size: 0.6em;
             font-weight: 700;
-            background: rgba(255,255,255,0.3);
+            background: #f1f5f9;
+            color: #64748b;
             margin-bottom: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .class-card.robotics .class-type-badge {
+            background: #eef2ff;
+            color: #6366f1;
+            border-color: #c7d2fe;
+        }
+        
+        .class-card.kindergarten .class-type-badge {
+            background: #fdf2f8;
+            color: #ec4899;
+            border-color: #fbcfe8;
+        }
+        
+        .class-card.other .class-type-badge {
+            background: #ecfeff;
+            color: #06b6d4;
+            border-color: #a5f3fc;
         }
         
         .class-name {
             font-weight: 700;
-            font-size: 0.95em;
-            margin-bottom: 6px;
+            font-size: 0.85em;
+            margin-bottom: 5px;
             line-height: 1.3;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #0f172a;
+        }
+        
+        .class-name i {
+            font-size: 1em;
+            color: #64748b;
         }
         
         .class-time {
-            font-size: 0.85em;
-            opacity: 0.95;
-            margin-bottom: 6px;
+            font-size: 0.75em;
+            color: #065fd4;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+        
+        .class-time i {
+            font-size: 0.95em;
+            color: #065fd4;
         }
         
         .class-session {
-            background: rgba(255,255,255,0.3);
+            background: #f8fafc;
             padding: 3px 8px;
             border-radius: 10px;
-            font-size: 0.75em;
-            display: inline-block;
-            margin-bottom: 6px;
+            font-size: 0.7em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 4px;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+        
+        .class-session i {
+            color: #94a3b8;
         }
         
         .class-students {
-            font-size: 0.8em;
-            opacity: 0.95;
+            font-size: 0.75em;
+            color: #475569;
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+        
+        .class-students i {
+            font-size: 1em;
+            color: #94a3b8;
         }
         
         .class-teacher {
-            font-size: 0.75em;
-            opacity: 0.9;
-            font-style: italic;
-            margin-bottom: 6px;
+            font-size: 0.7em;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+        
+        .class-teacher i {
+            font-size: 0.95em;
+            color: #94a3b8;
         }
         
         .class-centre {
-            background: rgba(255,255,255,0.3);
+            background: #f8fafc;
             padding: 3px 8px;
             border-radius: 8px;
-            font-size: 0.7em;
-            display: inline-block;
+            font-size: 0.65em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+        
+        .class-centre i {
+            font-size: 0.95em;
+            color: #94a3b8;
         }
         
         .empty-day {
             text-align: center;
-            color: #999;
-            padding: 40px 20px;
-            font-style: italic;
+            color: #94a3b8;
+            padding: 30px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .empty-day i {
+            font-size: 2em;
+            color: #cbd5e1;
+        }
+        
+        .empty-day p {
+            font-size: 0.8em;
+            font-weight: 500;
         }
         
         .hidden {
             display: none !important;
         }
         
-        @media (max-width: 768px) {
+        /* Tablet và nhỏ hơn */
+        @media (max-width: 1200px) {
             .calendar {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .day-content {
+                max-height: calc(100vh - 380px);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .calendar {
+                grid-template-columns: repeat(3, 1fr);
             }
             
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.6em;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            .week-navigation {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .calendar {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .header p {
+                font-size: 0.9em;
             }
             
             .controls {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 10px 15px;
             }
             
             .controls input {
                 min-width: 100%;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .calendar-wrapper {
+                padding: 10px;
+                max-height: calc(100vh - 320px);
+            }
+            
+            .day-content {
+                max-height: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .calendar {
+                grid-template-columns: 1fr;
+            }
+            
+            .week-navigation button {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            
+            .week-navigation span {
+                font-size: 0.8em;
+                padding: 6px 12px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📅 Lịch Học Robotics</h1>
-            <p>Tháng 2/2026</p>
-        </div>
         
         <div class="week-navigation">
-            <button id="prevWeek" onclick="changeWeek(-1)">⬅️ Tuần trước</button>
-            <span id="weekInfo">Tuần 2/5: 02/02/2026 - 08/02/2026</span>
-            <button id="nextWeek" onclick="changeWeek(1)">Tuần sau ➡️</button>
+            <button id="prevWeek" onclick="changeWeek(-1)"><i class="fas fa-chevron-left"></i>Tuần trước</button>
+            <span id="weekInfo"><i class="fas fa-calendar-week"></i>Tuần 2/5: 02/02/2026 - 08/02/2026</span>
+            <button id="nextWeek" onclick="changeWeek(1)">Tuần sau<i class="fas fa-chevron-right"></i></button>
         </div>
         
         <div class="controls">
             <div class="filter-group">
-                <label for="centreFilter">🏢 Cơ sở:</label>
+                <label for="centreFilter"><i class="fas fa-building"></i>Cơ sở:</label>
                 <select id="centreFilter" onchange="applyFilters()">
                     <option value="all">Tất cả cơ sở</option>
                     <option value="HCM - 01 Trường Chinh">HCM - 01 Trường Chinh</option><option value="HCM - 01 Tô Ký">HCM - 01 Tô Ký</option><option value="HCM - 261-263 Phan Xích Long">HCM - 261-263 Phan Xích Long</option><option value="HCM - 322 Tây Thạnh">HCM - 322 Tây Thạnh</option><option value="HCM - 414 Lũy Bán Bích">HCM - 414 Lũy Bán Bích</option><option value="HCM - Khu Tên Lửa">HCM - Khu Tên Lửa</option><option value="HCM - Phan Văn Trị">HCM - Phan Văn Trị</option>
@@ -344,7 +697,7 @@
             </div>
             
             <div class="filter-group">
-                <label for="classTypeFilter">📚 Loại lớp:</label>
+                <label for="classTypeFilter"><i class="fas fa-book"></i>Loại lớp:</label>
                 <select id="classTypeFilter" onchange="applyFilters()">
                     <option value="all">Tất cả</option>
                     <option value="robotics">Robotics (-rob-)</option>
@@ -354,19 +707,25 @@
             </div>
             
             <div class="filter-group">
-                <label for="teacherSearch">👨‍🏫 Tìm giáo viên:</label>
+                <label for="teacherSearch"><i class="fas fa-chalkboard-teacher"></i>Tìm giáo viên:</label>
                 <input type="text" id="teacherSearch" placeholder="Gõ tên giáo viên..." oninput="applyFilters()">
             </div>
         </div>
         
         <div class="stats">
             <div class="stat-item">
-                <strong>📚 Tổng số buổi học trong tuần:</strong>
-                <span id="totalClasses">0</span>
+                <i class="fas fa-graduation-cap"></i>
+                <div>
+                    <strong>Tổng số buổi học trong tuần:</strong>
+                    <span id="totalClasses">0</span>
+                </div>
             </div>
             <div class="stat-item">
-                <strong>👁️ Đang hiển thị:</strong>
-                <span id="displayedClasses">0</span>
+                <i class="fas fa-eye"></i>
+                <div>
+                    <strong>Đang hiển thị:</strong>
+                    <span id="displayedClasses">0</span>
+                </div>
             </div>
         </div>
         
@@ -469,17 +828,23 @@
                     card.setAttribute('data-classtype', cls.classType);
                     
                     let typeName = 'Khác';
-                    if (cls.classType === 'robotics') typeName = 'ROB';
-                    if (cls.classType === 'kindergarten') typeName = 'KIND';
-                    
-                    let content = '<span class="class-type-badge">' + typeName + '</span>';
-                    content += '<div class="class-name">' + cls.className + '</div>';
-                    content += '<div class="class-time">⏰ ' + cls.startTime + ' - ' + cls.endTime + '</div>';
-                    content += '<div><span class="class-session">Buổi ' + cls.session + '/' + cls.totalSessions + '</span></div>';
-                    content += '<div class="class-students">👥 ' + cls.studentCount + ' học sinh</div>';
-                    content += '<div class="class-teacher">👨‍🏫 ' + (cls.teachers || 'Chưa có GV') + '</div>';
-                    content += '<div><span class="class-centre">📍 ' + cls.centre + '</span></div>';
-                    
+                let typeIcon = 'fa-cube';
+                if (cls.classType === 'robotics') {
+                    typeName = 'ROB';
+                    typeIcon = 'fa-robot';
+                }
+                if (cls.classType === 'kindergarten') {
+                    typeName = 'KIND';
+                    typeIcon = 'fa-baby';
+                }
+                
+                let content = '<span class="class-type-badge"><i class="fas ' + typeIcon + '"></i> ' + typeName + '</span>';
+                content += '<div class="class-name"><i class="fas fa-graduation-cap"></i>' + cls.className + '</div>';
+                content += '<div class="class-time"><i class="fas fa-clock"></i>' + cls.startTime + ' - ' + cls.endTime + '</div>';
+                content += '<div><span class="class-session"><i class="fas fa-bookmark"></i>Buổi ' + cls.session + '/' + cls.totalSessions + '</span></div>';
+                content += '<div class="class-students"><i class="fas fa-users"></i>' + cls.studentCount + ' học sinh</div>';
+                content += '<div class="class-teacher"><i class="fas fa-chalkboard-teacher"></i>' + (cls.teachers || 'Chưa có GV') + '</div>';
+                content += '<div><span class="class-centre"><i class="fas fa-map-marker-alt"></i>' + cls.centre + '</span></div>';
                     card.innerHTML = content;
                     dayContent.appendChild(card);
                 });
@@ -495,8 +860,8 @@
             currentWeekIndex = newIndex;
             calendarData = allWeeksData[currentWeekIndex];
             
-            document.getElementById('weekInfo').textContent = 
-                'Tuần ' + (currentWeekIndex + 1) + '/' + allWeeksData.length + ': ' + 
+            document.getElementById('weekInfo').innerHTML = 
+                '<i class="fas fa-calendar-week"></i>Tuần ' + (currentWeekIndex + 1) + '/' + allWeeksData.length + ': ' + 
                 calendarData.weekStart + ' - ' + calendarData.weekEnd;
             
             document.getElementById('prevWeek').disabled = currentWeekIndex === 0;
@@ -557,7 +922,7 @@
                     if (!emptyDay) {
                         const emptyDiv = document.createElement('div');
                         emptyDiv.className = 'empty-day';
-                        emptyDiv.textContent = 'Không có lớp học';
+                        emptyDiv.innerHTML = '<i class="fas fa-calendar-times"></i><p>Không có lớp học</p>';
                         dayContent.appendChild(emptyDiv);
                     }
                 } else {

@@ -1,0 +1,155 @@
+================================================================
+  HƯỚNG DẪN SỬ DỤNG – TEACHER LOOKUP API (Apps Script)
+================================================================
+
+API URL (Production):
+  https://script.google.com/macros/s/AKfycbxgtpi2ZxtWxzcXwcfO-l0_Qy43sXgy97yIh7F1YX2TgxvH_5AdbxfjDM24l0CSQGDQhQ/exec
+
+Dữ liệu lấy từ Google Sheets:
+  https://docs.google.com/spreadsheets/d/1Nd2ZQwtGMkX93YbiUJJ1zl8LjBJzSJET3sLEZDBHxWQ
+  Sheet GID: 1869664336
+
+----------------------------------------------------------------
+  CÁCH GỌI API
+----------------------------------------------------------------
+
+1. HEALTH CHECK (kiểm tra API còn sống không)
+   Mở trình duyệt, truy cập:
+   https://script.google.com/.../exec
+
+   Kết quả trả về:
+   {
+     "status": "ok",
+     "message": "Teacher Lookup API đang hoạt động",
+     "usage": "?username=<lms_username>",
+     "timestamp": "2026-02-26T08:00:00.000Z"
+   }
+
+----------------------------------------------------------------
+
+2. TRA CỨU GIÁO VIÊN theo Username LMS
+   Thêm ?username=<tên_username> vào URL:
+   https://script.google.com/.../exec?username=maimonmen17102003
+
+   Kết quả khi TÌM THẤY:
+   {
+     "status": "ok",
+     "data": {
+       "maGV": "GV00001",
+       "tinhTrang": "Đã nghỉ",
+       "hoVaTen": "Tạ Thị Ngọc Mai",
+       "emailCongViec": "maimonmen17102003@mindx.net.vn",
+       "emailCaNhan": "maimonmen17102003@gmail.com",
+       "boPhan": "Kids & Teen",
+       "usernameLms": "maimonmen17102003",
+       "khuVucLamViec": "Hà Nội",
+       "onboard": "01/11/2021",
+       "offboard": "01/03/2022",
+       "thamNien": 120,
+       "rate": {
+         "lectureK12": "70,000",
+         "mentorK12": "52,500",
+         "superTeacher": null,
+         "lecture18": null,
+         "theoBuoi": "0"
+       },
+       "nganHang": {
+         "stk": "902269515",
+         "tenNganHang": "Mb bank",
+         "chuTaiKhoan": "TA THI NGOC MAI",
+         "chiNhanh": null
+       },
+       "ngaySinh": "10/12/2003",
+       "sdt": "0902269515",
+       "gioiTinh": "Nữ"
+     }
+   }
+
+   Kết quả khi KHÔNG TÌM THẤY:
+   {
+     "status": "not_found",
+     "message": "Không tìm thấy giáo viên với username: abc123"
+   }
+
+----------------------------------------------------------------
+  CÁC TRƯỜNG DỮ LIỆU TRẢ VỀ
+----------------------------------------------------------------
+
+  Trường              Mô tả
+  ─────────────────   ──────────────────────────────────────────
+  maGV                Mã giáo viên nội bộ (VD: GV00001)
+  tinhTrang           Đang làm việc / Đã nghỉ / Tạm nghỉ
+  hoVaTen             Họ và tên đầy đủ
+  emailCongViec       Email @mindx.net.vn
+  emailCaNhan         Email cá nhân
+  boPhan              Bộ phận (Kids & Teen, Robotics...)
+  teamPhuTrach        Team hoặc người phụ trách
+  maTeaching          Mã Teaching ID
+  usernameLms         Username đăng nhập LMS
+  khuVucLamViec       Hà Nội / TP HCM / Đà Nẵng...
+  chiNhanhLamViec     Chi nhánh cụ thể
+  diaDiemCoSo         Địa điểm cơ sở
+  onboard             Ngày bắt đầu làm (DD/MM/YYYY)
+  offboard            Ngày nghỉ việc   (DD/MM/YYYY), null = đang làm
+  thamNien            Số ngày thâm niên
+  rate.lectureK12     Rate lương Lecture K12 (VNĐ/buổi)
+  rate.mentorK12      Rate lương Mentor K12
+  rate.superTeacher   Rate Super Teacher
+  rate.lecture18      Rate Lecture 18+
+  rate.theoBuoi       Rate theo buổi
+  nganHang.stk        Số tài khoản ngân hàng
+  nganHang.tenNH      Tên ngân hàng
+  nganHang.chuTK      Tên chủ tài khoản
+  ngaySinh            Ngày sinh (DD/MM/YYYY)
+  sdt                 Số điện thoại cá nhân
+  gioiTinh            Nam / Nữ
+
+----------------------------------------------------------------
+  TEST NHANH TRÊN TRÌNH DUYỆT
+----------------------------------------------------------------
+
+  Copy và dán vào thanh địa chỉ trình duyệt:
+
+  # Health check:
+  https://script.google.com/macros/s/AKfycbxgtpi2ZxtWxzcXwcfO-l0_Qy43sXgy97yIh7F1YX2TgxvH_5AdbxfjDM24l0CSQGDQhQ/exec
+
+  # Tra cứu GV (thay username phù hợp):
+  https://script.google.com/macros/s/AKfycbxgtpi2ZxtWxzcXwcfO-l0_Qy43sXgy97yIh7F1YX2TgxvH_5AdbxfjDM24l0CSQGDQhQ/exec?username=maimonmen17102003
+
+----------------------------------------------------------------
+  TEST BẰNG CURL (Terminal / Command Prompt)
+----------------------------------------------------------------
+
+  curl "https://script.google.com/macros/s/AKfycbxgtpi2ZxtWxzcXwcfO-l0_Qy43sXgy97yIh7F1YX2TgxvH_5AdbxfjDM24l0CSQGDQhQ/exec?username=huy183605" -L
+
+  (cờ -L để follow redirect của Google)
+
+----------------------------------------------------------------
+  GỌI API TRONG CODE (JavaScript / Node.js)
+----------------------------------------------------------------
+
+  const BASE = 'https://script.google.com/macros/s/AKfycbxgtpi2ZxtWxzcXwcfO-l0_Qy43sXgy97yIh7F1YX2TgxvH_5AdbxfjDM24l0CSQGDQhQ/exec';
+
+  async function getTeacher(username) {
+    const res = await fetch(`${BASE}?username=${username}`, { redirect: 'follow' });
+    return res.json();
+  }
+
+  const data = await getTeacher('maimonmen17102003');
+  console.log(data);
+
+  ⚠️ Lưu ý CORS: Chỉ gọi được từ server-side (Node.js) hoặc
+  qua proxy. Gọi thẳng từ browser sẽ bị chặn CORS.
+
+----------------------------------------------------------------
+  CẬP NHẬT CODE APPS SCRIPT
+----------------------------------------------------------------
+
+  Khi sửa file teacherLookup.gs, cần deploy lại:
+  1. Mở Apps Script Editor
+  2. Deploy > Manage deployments
+  3. Nhấn ✏️ Edit > chọn "New version"
+  4. Nhấn Deploy
+  URL KHÔNG đổi sau mỗi lần deploy.
+
+================================================================

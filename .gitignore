@@ -2,3 +2,5 @@ node_modules/
 .env
 *.json
 *.csv
+
+.early.coverage.token_cache.json 
